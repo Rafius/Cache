@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import "typeface-roboto";
 import { GlobalStyle } from "./MainStyled";
 import Home from "@/pages/home";
 
