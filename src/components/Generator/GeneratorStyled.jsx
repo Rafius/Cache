@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const GeneratorContainer = styled.main`
+export const GeneratorContainer = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 800px;

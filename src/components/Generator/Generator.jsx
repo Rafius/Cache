@@ -3,27 +3,15 @@ import React from "react";
 import Select from "@/components/Select";
 import { GeneratorContainer } from "./GeneratorStyled";
 
-const options = ["Asignacion directa", "LRU"];
+const options = ["Asignacion directa", "LRU", "FIFO"];
 
-const Generator = () => {
-  const [inputData, setInputData] = React.useState({
-    option: "Asignacion directa",
-    lines: "",
-    blocks: "",
-    reads:
-      "12, 13, 25, 26, 17, 8, 22, 3, 24, 62, 5, 63, 64, 17, 18, 19, 57, 58, 20, 25"
-  });
-
+const Generator = ({ inputData, setInputData }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputData((prevState) => ({
       ...prevState,
       [name]: value
     }));
-  };
-
-  const handleClick = () => {
-    inputData.reads.split(",").forEach((item) => console.log(item.trim()));
   };
 
   return (
@@ -53,7 +41,6 @@ const Generator = () => {
       />
 
       <Select options={options} />
-      <button onClick={handleClick}>Simular</button>
     </GeneratorContainer>
   );
 };
