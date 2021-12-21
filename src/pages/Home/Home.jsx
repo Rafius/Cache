@@ -1,11 +1,10 @@
-import * as React from "react";
+import React from "react";
 
-const Home = () => {
-  return (
-    <div>
-      <h1>Home</h1>
-    </div>
-  );
+import Select from "@/components/Select";
+
+const options = ["Asignacion directa", "LRU"];
+const Matches = () => {
+  return <Select options={options}></Select>;
 };
 
-export default Home;
+export default Matches;
