@@ -1,10 +1,15 @@
 import React from "react";
 
-import Select from "@/components/Select";
-
-const options = ["Asignacion directa", "LRU"];
+import { HomeStyled } from "./HomeStyled";
+import Generator from "@/components/Generator";
+import Table from "@/components/Table";
 const Matches = () => {
-  return <Select options={options}></Select>;
+  return (
+    <HomeStyled>
+      <Generator />
+      <Table />
+    </HomeStyled>
+  );
 };
 
 export default Matches;
