@@ -37,6 +37,8 @@ const useHomeHooks = () => {
         tag
       }
     ]);
+
+    // Update state to include the failed read using direct assignment
   };
 
   const checkReads = () => {

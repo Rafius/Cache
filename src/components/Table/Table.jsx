@@ -32,6 +32,7 @@ const Table = ({ lines, blocks, reads, failsToPrint }) => (
               {`${index}:0  (${index * blocks} - ${(index + 1) * blocks - 1})`}
             </StyledTableCell>
             {failsToPrint.map((item, j) => {
+              // Add logic to only print the correct column
               const { line, read, block, tag } = item;
               console.log(index === line && failsToPrint[j].read === read);
               if (index === line && failsToPrint[j].read === read) {
