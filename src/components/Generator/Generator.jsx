@@ -49,6 +49,12 @@ const Generator = ({ inputData, setInputData }) => {
     }
   ];
 
+  const handleSelect = (e) => {
+    setInputData((prevState) => ({
+      ...prevState,
+      option: e.target.value
+    }));
+  };
   return (
     <GeneratorContainer>
       {inputs.map(({ label, name, value, type }) => {
@@ -65,7 +71,11 @@ const Generator = ({ inputData, setInputData }) => {
         );
       })}
 
-      <Select options={options} />
+      <Select
+        options={options}
+        defaultValue={inputData.option}
+        handleSelect={handleSelect}
+      />
     </GeneratorContainer>
   );
 };

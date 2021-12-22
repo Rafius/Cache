@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const useHomeHooks = () => {
   const [inputData, setInputData] = useState({
-    option: "Asignacion directa",
+    option: "FIFO",
     lines: 0,
     blocks: 0,
     reads: "",
@@ -53,10 +53,42 @@ const useHomeHooks = () => {
     );
   };
 
+  const lru = (read) => {
+    // let lastLineUse = -1;
+    // const { line, tag } = calculateNewLine(read);
+    // const newLine = (lastLineUse + 1) % 3;
+    // cacheState[newLine] = [...Array(blocks)].map(
+    //   (_, index) => blocks * line + tag * lines * blocks + index
+    // );
+  };
+
+  let lastLineUse = -1;
+
+  const fifo = (read) => {
+    const line = (lastLineUse + 1) % 3;
+    const block = Math.floor(read / blocks);
+    const tag = Math.floor(block / lines);
+    lastLineUse = line;
+
+    setFailsToPrint((prevState) => [
+      ...prevState,
+      {
+        read,
+        line,
+        block,
+        tag
+      }
+    ]);
+
+    cacheState[line] = [...Array(blocks)].map(
+      (_, index) => blocks * block + index
+    );
+  };
   const checkReads = () => {
     reads.split(",").forEach((read) => {
       read = parseInt(read.trim());
       if (hits.includes(read) || fails.includes(read)) return;
+
       if (cacheState.flat().includes(read)) {
         setHits((prevState) => [...prevState, read]);
       } else {
@@ -69,8 +101,8 @@ const useHomeHooks = () => {
 
   const cacheDictionary = {
     "Asignacion directa": directAssignment,
-    LRU: "LRU",
-    FIFO: "FIFO"
+    LRU: lru,
+    FIFO: fifo
   };
 
   return {
