@@ -20,5 +20,5 @@ export const RowContainer = styled.div`
 export const Row = styled.div``;
 
 export const Empty = styled.div`
-  color: white;
+  visibility: hidden;
 `;

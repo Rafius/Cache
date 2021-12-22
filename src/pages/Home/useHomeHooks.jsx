@@ -2,13 +2,14 @@ import { useState } from "react";
 
 const useHomeHooks = () => {
   const [inputData, setInputData] = useState({
-    option: "FIFO",
+    option: "Asignacion directa",
     lines: 0,
     blocks: 0,
     reads: "",
-    hitAccessTime: 4,
-    failAccessTime: 20
+    hitAccessTime: 0,
+    failAccessTime: 0
   });
+
   const { option, lines, blocks, reads } = inputData;
 
   const generateCache = () => {
@@ -26,9 +27,6 @@ const useHomeHooks = () => {
   const [failsToPrint, setFailsToPrint] = useState([]);
 
   const handleClick = () => {
-    setFails([]);
-    setHits([]);
-    setFailsToPrint([]);
     if (!reads) return;
     checkReads();
   };
@@ -53,13 +51,40 @@ const useHomeHooks = () => {
     );
   };
 
+  let linesRead = [...Array(lines)].map((_, i) => i);
+
+  const updateLinesRead = (read) => {
+    const lineReaded = cacheState.findIndex((state) => state.includes(read));
+
+    const newLinesRead = [...linesRead];
+    newLinesRead[0] = lineReaded;
+
+    for (let i = 0; i < newLinesRead.length - 1; i++) {
+      if (!newLinesRead.includes(linesRead[i])) {
+        newLinesRead[i + 1] = linesRead[i];
+      }
+    }
+    linesRead = newLinesRead;
+  };
+
   const lru = (read) => {
-    // let lastLineUse = -1;
-    // const { line, tag } = calculateNewLine(read);
-    // const newLine = (lastLineUse + 1) % 3;
-    // cacheState[newLine] = [...Array(blocks)].map(
-    //   (_, index) => blocks * line + tag * lines * blocks + index
-    // );
+    const line = linesRead[lines - 1];
+    const block = Math.floor(read / blocks);
+    const tag = Math.floor(block / lines);
+
+    setFailsToPrint((prevState) => [
+      ...prevState,
+      {
+        read,
+        line,
+        block,
+        tag
+      }
+    ]);
+
+    cacheState[line] = [...Array(blocks)].map(
+      (_, index) => blocks * block + index
+    );
   };
 
   let lastLineUse = -1;
@@ -87,8 +112,6 @@ const useHomeHooks = () => {
   const checkReads = () => {
     reads.split(",").forEach((read) => {
       read = parseInt(read.trim());
-      if (hits.includes(read) || fails.includes(read)) return;
-
       if (cacheState.flat().includes(read)) {
         setHits((prevState) => [...prevState, read]);
       } else {
@@ -96,6 +119,7 @@ const useHomeHooks = () => {
         const callback = cacheDictionary[option];
         callback(read);
       }
+      updateLinesRead(read);
     });
   };
 
