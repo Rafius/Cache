@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 const useHomeHooks = () => {
   const [inputData, setInputData] = useState({
     option: "Asignacion directa",
-    lines: 4,
-    blocks: 8,
+    lines: 0,
+    blocks: 0,
     reads: "",
     hitAccessTime: 4,
     failAccessTime: 20
@@ -26,6 +26,9 @@ const useHomeHooks = () => {
   const [failsToPrint, setFailsToPrint] = useState([]);
 
   const handleClick = () => {
+    setFails([]);
+    setHits([]);
+    setFailsToPrint([]);
     if (!reads) return;
     checkReads();
   };

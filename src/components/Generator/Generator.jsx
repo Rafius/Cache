@@ -1,7 +1,9 @@
 import React from "react";
 
+import { Input, InputLabel } from "@mui/material";
+
 import Select from "@/components/Select";
-import { GeneratorContainer } from "./GeneratorStyled";
+import { GeneratorContainer, InputContainer } from "./GeneratorStyled";
 
 const options = ["Asignacion directa", "LRU", "FIFO"];
 
@@ -10,51 +12,58 @@ const Generator = ({ inputData, setInputData }) => {
     const { name, value } = e.target;
     setInputData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: name !== "reads" ? parseInt(value) : value
     }));
   };
 
+  const inputs = [
+    {
+      label: "Cantidad de lineas de Memoria Cache",
+      name: "lines",
+      value: inputData.lines,
+      type: "number"
+    },
+    {
+      label: "Cantidad de bloques por linea",
+      name: "blocks",
+      value: inputData.blocks,
+      type: "number"
+    },
+    {
+      label: "Numeros a leer",
+      name: "reads",
+      value: inputData.reads,
+      type: "text"
+    },
+    {
+      label: "Tiempo de acceso de aciertos",
+      name: "hitAccessTime",
+      value: inputData.hitAccessTime,
+      type: "number"
+    },
+    {
+      label: "Tiempo de acceso de fallos",
+      name: "failAccessTime",
+      value: inputData.failAccessTime,
+      type: "number"
+    }
+  ];
+
   return (
     <GeneratorContainer>
-      <label>Cantidad de lineas de Memoria Cache</label>
-      <input
-        name="lines"
-        type="number"
-        value={inputData.lines}
-        onChange={handleChange}
-      />
-
-      <label>Cantidad de bloques por linea</label>
-      <input
-        name="blocks"
-        type="text"
-        value={inputData.blocks}
-        onChange={handleChange}
-      />
-
-      <label>Numeros a leer</label>
-      <input
-        name="reads"
-        type="text"
-        onChange={handleChange}
-        value={inputData.reads}
-      />
-
-      <label>Tiempo de acceso de fallo</label>
-      <input
-        name="hitAccessTime"
-        type="text"
-        onChange={handleChange}
-        value={inputData.hitAccessTime}
-      />
-
-      <label>Tiempo de acceso de acierto</label>
-      <input
-        name="failAccessTime"
-        type="text"
-        onChange={handleChange}
-        value={inputData.failAccessTime}
-      />
+      {inputs.map(({ label, name, value, type }) => {
+        return (
+          <InputContainer key={name}>
+            <InputLabel>{label}</InputLabel>
+            <Input
+              name={name}
+              type={type}
+              value={value}
+              onChange={handleChange}
+            />
+          </InputContainer>
+        );
+      })}
 
       <Select options={options} />
     </GeneratorContainer>

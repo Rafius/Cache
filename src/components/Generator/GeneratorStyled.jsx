@@ -7,3 +7,7 @@ export const GeneratorContainer = styled.div`
   margin: auto;
   padding: 20px;
 `;
+
+export const InputContainer = styled.div`
+  margin: 20px 0;
+`;

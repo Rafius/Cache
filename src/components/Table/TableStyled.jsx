@@ -3,6 +3,10 @@ import styled from "styled-components";
 export const TableContainer = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 0 auto;
+  margin-top: 20px;
 `;
 
 export const RowContainer = styled.div`
