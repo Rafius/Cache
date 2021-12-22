@@ -40,6 +40,22 @@ const Generator = ({ inputData, setInputData }) => {
         value={inputData.reads}
       />
 
+      <label>Tiempo de acceso de fallo</label>
+      <input
+        name="hitAccessTime"
+        type="text"
+        onChange={handleChange}
+        value={inputData.hitAccessTime}
+      />
+
+      <label>Tiempo de acceso de acierto</label>
+      <input
+        name="failAccessTime"
+        type="text"
+        onChange={handleChange}
+        value={inputData.failAccessTime}
+      />
+
       <Select options={options} />
     </GeneratorContainer>
   );

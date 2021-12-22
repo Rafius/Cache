@@ -5,13 +5,21 @@ const useHomeHooks = () => {
     option: "Asignacion directa",
     lines: 4,
     blocks: 8,
-    reads: ""
+    reads: "",
+    hitAccessTime: 4,
+    failAccessTime: 20
   });
   const { option, lines, blocks, reads } = inputData;
 
-  const [state, setState] = useState(
-    [...Array(lines * blocks)].map((_, index) => index)
-  );
+  const generateCache = () => {
+    let cacheLines = [];
+    for (let i = 0; i < lines; i++) {
+      cacheLines[i] = [...Array(blocks)].map((_, index) => index + blocks * i);
+    }
+    return cacheLines;
+  };
+
+  let cacheState = generateCache();
 
   const [fails, setFails] = useState([]);
   const [hits, setHits] = useState([]);
@@ -23,7 +31,6 @@ const useHomeHooks = () => {
   };
 
   const directAssignment = (read) => {
-    // Add read to state
     const line = Math.floor(read / blocks) % 4;
     const block = Math.floor(read / blocks);
     const tag = Math.floor(block / lines);
@@ -38,14 +45,16 @@ const useHomeHooks = () => {
       }
     ]);
 
-    // Update state to include the failed read using direct assignment
+    cacheState[line] = [...Array(blocks)].map(
+      (_, index) => blocks * line + tag * lines * blocks + index
+    );
   };
 
   const checkReads = () => {
     reads.split(",").forEach((read) => {
       read = parseInt(read.trim());
       if (hits.includes(read) || fails.includes(read)) return;
-      if (state.includes(read)) {
+      if (cacheState.flat().includes(read)) {
         setHits((prevState) => [...prevState, read]);
       } else {
         setFails((prevState) => [...prevState, read]);
@@ -62,6 +71,8 @@ const useHomeHooks = () => {
   };
 
   return {
+    hits,
+    fails,
     inputData,
     failsToPrint,
     handleClick,
