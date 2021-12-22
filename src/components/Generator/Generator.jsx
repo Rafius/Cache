@@ -57,19 +57,17 @@ const Generator = ({ inputData, setInputData }) => {
   };
   return (
     <GeneratorContainer>
-      {inputs.map(({ label, name, value, type }) => {
-        return (
-          <InputContainer key={name}>
-            <InputLabel>{label}</InputLabel>
-            <Input
-              name={name}
-              type={type}
-              value={value}
-              onChange={handleChange}
-            />
-          </InputContainer>
-        );
-      })}
+      {inputs.map(({ label, name, value, type }) => (
+        <InputContainer key={name}>
+          <InputLabel>{label}</InputLabel>
+          <Input
+            name={name}
+            type={type}
+            value={value}
+            onChange={handleChange}
+          />
+        </InputContainer>
+      ))}
 
       <Select
         options={options}
