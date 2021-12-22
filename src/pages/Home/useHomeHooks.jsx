@@ -62,8 +62,8 @@ const useHomeHooks = () => {
   };
 
   return {
-    failsToPrint,
     inputData,
+    failsToPrint,
     handleClick,
     setInputData
   };
