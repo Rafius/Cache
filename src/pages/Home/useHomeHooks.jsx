@@ -70,15 +70,13 @@ const useHomeHooks = () => {
   const lru = (read) => {
     const line = linesRead[lines - 1];
     const block = Math.floor(read / blocks);
-    const tag = Math.floor(block / lines);
 
     setFailsToPrint((prevState) => [
       ...prevState,
       {
         read,
         line,
-        block,
-        tag
+        block
       }
     ]);
 
@@ -92,7 +90,6 @@ const useHomeHooks = () => {
   const fifo = (read) => {
     const line = (lastLineUse + 1) % 3;
     const block = Math.floor(read / blocks);
-    const tag = Math.floor(block / lines);
     lastLineUse = line;
 
     setFailsToPrint((prevState) => [
@@ -100,8 +97,7 @@ const useHomeHooks = () => {
       {
         read,
         line,
-        block,
-        tag
+        block
       }
     ]);
 

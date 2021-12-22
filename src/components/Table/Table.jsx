@@ -1,40 +1,53 @@
 import React from "react";
+import { RowItemFailed } from "./TableStyled";
 
-import { TableContainer, RowContainer, Row, Empty } from "./TableStyled";
+import {
+  TableContainer,
+  RowContainer,
+  RowHeader,
+  RowItem,
+  Empty
+} from "./TableStyled";
 
 const initialRows = ["Linea", "Estado Inicial"];
 
-const Table = ({ lines, blocks, failsToPrint }) => {
+const Table = ({ option, lines, blocks, failsToPrint }) => {
   return (
     <TableContainer>
       {initialRows.map((row, index) => (
         <RowContainer key={index}>
-          <Row>{row}</Row>
+          <RowHeader>{row}</RowHeader>
           {[...Array(parseInt(lines))].map((_, j) => (
-            <div key={j}>
+            <>
               {index === 0 ? (
-                <div align="left">{j}</div>
+                <RowItem key={j}>{j}</RowItem>
               ) : (
-                <div align="left">
+                <RowItem key={j}>
                   {`${j}:0  (${j * blocks} - ${(j + 1) * blocks - 1})`}
-                </div>
+                </RowItem>
               )}
-            </div>
+            </>
           ))}
         </RowContainer>
       ))}
       {failsToPrint.map(({ line, read, block, tag }) => (
         <RowContainer key={read}>
-          <Row>Fallo: {read}</Row>
+          <RowHeader>Fallo: {read}</RowHeader>
           {[...Array(parseInt(lines))].map((_, index) => {
             if (line !== index) return <Empty key={index}>vacio</Empty>;
+            if (option === "Asignacion directa") {
+              return (
+                <RowItemFailed key={index}>
+                  {`${block}:${tag} (${block * blocks} - ${
+                    (block + 1) * blocks - 1
+                  })`}
+                </RowItemFailed>
+              );
+            }
             return (
-              <div key={index}>
-                F|{" "}
-                {`${block}:${tag} (${block * blocks} - ${
-                  (block + 1) * blocks - 1
-                })`}
-              </div>
+              <RowItemFailed key={index}>
+                {`${block} (${block * blocks} - ${(block + 1) * blocks - 1})`}
+              </RowItemFailed>
             );
           })}
         </RowContainer>
